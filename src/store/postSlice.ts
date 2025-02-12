@@ -31,7 +31,7 @@ export const addPost = createAsyncThunk('posts/addPost', async (newPost, { rejec
 });
 
 
-// Async thunk for editing a post
+// Async thunk for editing/Updating a post
 export const editPost = createAsyncThunk(
   'posts/editPost',
   async ({id, updatedPost}) => {

@@ -3,7 +3,7 @@ import { View, Text, FlatList, TextInput, StyleSheet, ActivityIndicator, Alert }
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts, addPost, editPost, deletePost } from '../store/postSlice';
 import CustomButton from './CustomButton';
-import {useNavigation, useTheme} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 
 interface PostType {
   id: number;

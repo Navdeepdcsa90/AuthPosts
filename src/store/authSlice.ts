@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Async thunk for login
+// Async thunk for User login
 export const login = createAsyncThunk(
   'auth/login',
   async ({username, password}, {rejectWithValue}) => {
@@ -30,6 +30,7 @@ export const login = createAsyncThunk(
   },
 );
 
+// Fetch AuthUser Data
 export const fetchAuthUser = createAsyncThunk(
   'auth/fetchAuthUser ',
   async token => {
@@ -41,6 +42,7 @@ export const fetchAuthUser = createAsyncThunk(
   },
 );
 
+// Refresh Token
 export const refreshToken = createAsyncThunk(
   'auth/refreshToken',
   async refreshToken => {

@@ -1,81 +1,117 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   View,
   TextInput,
-  Button,
   Text,
   StyleSheet,
   TouchableOpacity,
   Alert,
-} from 'react-native';
-import {useDispatch} from 'react-redux';
-import {login} from '../store/authSlice';
-import {useNavigation, useTheme} from '@react-navigation/native';
+} from "react-native";
+import { useDispatch } from "react-redux";
+import { login } from "../store/authSlice";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import CustomButton from "./CustomButton";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {Colors} = useTheme() as any;
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const { Colors } = useTheme() as any;
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateUsername = (username: string) => {
+    const usernameRegex = /^[a-zA-Z0-9._]{4,}$/; // At least 4 characters, allows letters, numbers, dot, underscore
+    return usernameRegex.test(username);
+  };
+
+  const validatePassword = (password: string) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleLogin = () => {
-    setUsernameError('');
-    setPasswordError('');
+    setUsernameError("");
+    setPasswordError("");
 
     if (!username) {
-      setUsernameError('Please enter username');
+      setUsernameError("Please enter username");
       return;
-    } else if (!password) {
-      setPasswordError('Please enter password');
+    } else if (!validateUsername(username)) {
+      setUsernameError(
+        "Username must be at least 4 characters and contain only letters, numbers, dots, and underscores."
+      );
       return;
     }
-    const loginData = {username, password};
+
+    if (!password) {
+      setPasswordError("Please enter password");
+      return;
+    } else if (!validatePassword(password)) {
+      setPasswordError(
+        "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character."
+      );
+      return;
+    }
+
+    const loginData = { username, password };
 
     dispatch(login(loginData))
       .unwrap()
-      .then(data => {
+      .then((data) => {
+        console.log("data in login===", data);
         if (data) {
-          Alert.alert('Login Successfully');
-          navigation.navigate('DrawerNavigator');
+          Alert.alert("Login Successfully");
+          navigation.navigate("DrawerNavigator");
         }
-        console.log('Login successful:', data);
+        console.log("Login successful:", data);
       })
-      .catch(err => {
-        console.error('Login error:', err);
+      .catch((err) => {
+        console.error("Login error:", err);
+        Alert.alert("Login Failed", "Invalid credentials. Please try again.");
       });
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: Colors.backgroundColor}]}>
+    <View
+      style={[styles.container, { backgroundColor: Colors.backgroundColor }]}
+    >
+      <Text style={styles.loginText}>Login</Text>
+
       <TextInput
         style={[
           styles.input,
-          {borderColor: Colors.borderColor, backgroundColor: Colors.background},
+          {
+            borderColor: usernameError ? "red" : Colors.borderColor,
+            backgroundColor: Colors.background,
+          },
         ]}
         placeholder="Username"
         onChangeText={setUsername}
         value={username}
+        autoCapitalize="none"
       />
       {usernameError ? <Text style={styles.error}>{usernameError}</Text> : null}
 
       <TextInput
         style={[
           styles.input,
-          {borderColor: Colors.borderColor, backgroundColor: Colors.background},
+          {
+            borderColor: passwordError ? "red" : Colors.borderColor,
+            backgroundColor: Colors.background,
+          },
         ]}
         placeholder="Password"
         secureTextEntry
         onChangeText={setPassword}
         value={password}
+        autoCapitalize="none"
       />
       {passwordError ? <Text style={styles.error}>{passwordError}</Text> : null}
-
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+      <CustomButton style={styles.button} title="Login" onPress={handleLogin} />
     </View>
   );
 };
@@ -83,7 +119,7 @@ const LoginForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 16,
   },
   input: {
@@ -91,22 +127,30 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   button: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     borderRadius: 5,
     paddingVertical: 15,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   error: {
-    color: 'red',
+    color: "red",
+    fontSize: 14,
     marginBottom: 10,
+  },
+  loginText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
+    color: "black",
   },
 });
 

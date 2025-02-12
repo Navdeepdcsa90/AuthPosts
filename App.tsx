@@ -17,8 +17,6 @@ const App = () => {
       <NavigationContainer
       theme={theme === "dark" ? DarkTheme : LightTheme}
       >
-        {/* <DrawerNavigator /> */}
-        {/* <TabNavigator /> */}
         <AuthStack />
       </NavigationContainer>
     </Provider>

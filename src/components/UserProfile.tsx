@@ -1,8 +1,16 @@
-import React from 'react';
-import {View, Text, Button, StyleSheet, TouchableOpacity, Alert} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {logout, fetchAuthUser, refreshToken} from '../store/authSlice';
-import {useNavigation,useTheme} from '@react-navigation/native';
+import React from "react";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, fetchAuthUser, refreshToken } from "../store/authSlice";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import CustomButton from "./CustomButton";
 
 interface User {
   users: {
@@ -19,9 +27,9 @@ interface AuthState {
 const UserProfile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {Colors} = useTheme() as any;
-  const authState: AuthState = useSelector(state => state.auth);
-  const {user, token, refreshToken: refreshTokenValue} = authState;
+  const { Colors } = useTheme() as any;
+  const authState: AuthState = useSelector((state) => state.auth);
+  const { user, token, refreshToken: refreshTokenValue } = authState;
 
   React.useEffect(() => {
     if (token) {
@@ -37,36 +45,39 @@ const UserProfile = () => {
     if (refreshTokenValue) {
       dispatch(refreshToken(refreshTokenValue))
         .unwrap()
-        .then(data => {
-          if(data)
-          {
-            Alert.alert('Token refreshed successfully')
+        .then((data) => {
+          if (data) {
+            Alert.alert("Token refreshed successfully");
           }
-          console.log('Token refreshed successfully:', data);
+          console.log("Token refreshed successfully:", data);
         })
-        .catch(err => {
-          console.error('Failed to refresh token:', err);
+        .catch((err) => {
+          console.error("Failed to refresh token:", err);
         });
     } else {
-      console.log('No refresh token available.');
+      console.log("No refresh token available.");
     }
   };
 
-
-
   return (
-    <View style={[styles.container,{backgroundColor:Colors.profileBackground}]}>
+    <View
+      style={[styles.container, { backgroundColor: Colors.profileBackground }]}
+    >
       {user ? (
         <>
-          <Text style={[styles.title,{color:Colors.titleColor}]}>
+          <Text style={[styles.title, { color: Colors.titleColor }]}>
             Welcome, {user?.users[0]?.firstName}!
           </Text>
-          <TouchableOpacity style={styles.button} onPress={handleRefreshToken}>
-            <Text style={styles.buttonText}>Refresh Token</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
+          <CustomButton
+            style={styles.button}
+            title="Refresh Token"
+            onPress={handleRefreshToken}
+          />
+          <CustomButton
+            style={styles.button}
+            title="Logout"
+            onPress={handleLogout}
+          />
         </>
       ) : (
         <Text style={styles.title}>You are not logged in.</Text>
@@ -77,33 +88,33 @@ const UserProfile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
   },
   title: {
     fontSize: 26,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 30,
   },
   button: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,
     marginVertical: 10,
-    alignItems: 'center',
-    width: '80%',
+    alignItems: "center",
+    width: "60%",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   drawerText: {
-    color: 'blue',
+    color: "blue",
     marginTop: 20,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     fontSize: 16,
   },
 });
