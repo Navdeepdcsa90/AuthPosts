@@ -52,6 +52,7 @@ const authSlice = createSlice({
     user: null,
     token: null,
     refreshToken: null,
+    isAuthenticated: false,
     status: "idle",
     error: null,
   },
@@ -60,6 +61,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.refreshToken = null;
+      state.isAuthenticated = false;
       state.status = "idle";
       state.error = null;
     },
@@ -72,13 +74,16 @@ const authSlice = createSlice({
         state.token = action.payload.accessToken;
         console.log("state.token=====", state.token);
         state.refreshToken = action.payload.refreshToken;
+        state.isAuthenticated = true;
       })
       .addCase(fetchAuthUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(refreshToken.fulfilled, (state, action) => {
         state.token = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
+        state.isAuthenticated = true;
       });
   },
 });

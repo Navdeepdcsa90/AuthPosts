@@ -70,11 +70,6 @@ const UserProfile = () => {
           </Text>
           <CustomButton
             style={styles.button}
-            title="Refresh Token"
-            onPress={handleRefreshToken}
-          />
-          <CustomButton
-            style={styles.button}
             title="Logout"
             onPress={handleLogout}
           />
