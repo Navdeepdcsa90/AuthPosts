@@ -90,6 +90,7 @@ const LoginForm = () => {
           },
         ]}
         placeholder="Username"
+        placeholderTextColor={Colors.placeholderTextColor}
         onChangeText={setUsername}
         value={username}
         autoCapitalize="none"
@@ -105,6 +106,7 @@ const LoginForm = () => {
           },
         ]}
         placeholder="Password"
+        placeholderTextColor={Colors.placeholderTextColor}
         secureTextEntry
         onChangeText={setPassword}
         value={password}

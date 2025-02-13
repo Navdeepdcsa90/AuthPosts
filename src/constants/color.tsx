@@ -8,7 +8,8 @@ const LightTheme = {
         borderColor: '#ccc',
         background:"#fff",
         titleColor:"#333",
-        profileBackground:"#f8f8f8"
+        profileBackground:"#f8f8f8",
+        placeholderTextColor:"#333"
     }
 };
 
@@ -20,7 +21,8 @@ const DarkTheme = {
         borderColor: '#ccc',
         background:"#fff",
         titleColor:"#333",
-        profileBackground:"#f8f8f8"
+        profileBackground:"#f8f8f8",
+        placeholderTextColor:"#333"
     }
 }
 
